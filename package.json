@@ -1,5 +1,5 @@
 {
-  "name": "bncsutil-node",
+  "name": "bncsutil",
   "version": "0.1.0",
   "description": "BNCS bindings for Node",
   "main": "lib/index.js",
