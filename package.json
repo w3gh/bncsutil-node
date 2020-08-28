@@ -1,0 +1,14 @@
+{
+  "name": "bncsutil-node",
+  "version": "0.1.0",
+  "description": "BNCS bindings for Node",
+  "main": "lib/index.js",
+  "author": "Nikolay Kostyurin <jilizart@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "neon-cli": "^0.2.0"
+  },
+  "scripts": {
+    "install": "neon build"
+  }
+}

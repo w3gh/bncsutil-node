@@ -1,0 +1,10 @@
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/install/local.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/install/strip.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/install.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/list_install_components.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/edit_cache.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/rebuild_cache.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/package_source.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/bncsutil_static.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/package.dir
+/Users/jilizart/Projects/Github/bncsutil-node/native/bncsutil/CMakeFiles/bncsutil.dir
