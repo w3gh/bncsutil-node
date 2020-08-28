@@ -5,11 +5,11 @@
 
 
 //#[macro_use]
-//extern crate neon;
+extern crate neon;
 extern crate libc;
 
 //use std::ffi::{CStr, CString};
-//use neon::prelude::*;
+use neon::prelude::*;
 
 //fn version(mut cx: FunctionContext) -> JsResult<JsNumber> {
 //    unsafe {
@@ -46,22 +46,28 @@ extern crate libc;
 
 //}
 
-//register_module!(mut m, {
-//    m.export_function("version", version)
-//});
+
 
 #[link(name="bncsutil_static", kind="static")]
 extern {
     // this is rustified prototype of the function from our C library
     pub fn bncsutil_getVersion() -> u64;
+//    pub fn bncsutil_getVersionString(outbuf: *mut ::std::os::raw::c_char) -> u64;
 }
 
 pub fn version() -> u64 {
     unsafe {
-        return bncsutil_getVersion();
+        bncsutil_getVersion()
     }
 }
 
+fn version_js(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    Ok(cx.number(version() as f64))
+}
+
+register_module!(mut m, {
+    m.export_function("version", version_js)
+});
 
 #[cfg(test)]
 mod tests {
@@ -69,6 +75,6 @@ mod tests {
 
     #[test]
     fn test_version() {
-        assert_eq!(version(), 4);
+        assert_eq!(version(), 10300);
     }
 }
