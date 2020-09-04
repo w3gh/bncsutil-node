@@ -2,14 +2,14 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
-
-
 //#[macro_use]
 extern crate neon;
 extern crate libc;
 
-//use std::ffi::{CStr, CString};
+use bncs::*;
 use neon::prelude::*;
+
+mod bncs;
 
 //fn version(mut cx: FunctionContext) -> JsResult<JsNumber> {
 //    unsafe {
@@ -46,35 +46,21 @@ use neon::prelude::*;
 
 //}
 
-
-
-#[link(name="bncsutil_static", kind="static")]
-extern {
-    // this is rustified prototype of the function from our C library
-    pub fn bncsutil_getVersion() -> u64;
-//    pub fn bncsutil_getVersionString(outbuf: *mut ::std::os::raw::c_char) -> u64;
-}
-
-pub fn version() -> u64 {
-    unsafe {
-        bncsutil_getVersion()
-    }
-}
-
 fn version_js(mut cx: FunctionContext) -> JsResult<JsNumber> {
     Ok(cx.number(version() as f64))
 }
 
-register_module!(mut m, {
-    m.export_function("version", version_js)
-});
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_version() {
-        assert_eq!(version(), 10300);
-    }
+fn version_string_js(mut cx: FunctionContext) -> JsResult<JsString> {
+    Ok(cx.string(version_string()))
 }
+
+//fn get_exe_info_js(mut cx: FunctionContext) -> JsResult<JsString> {
+//    Ok(cx.string(version_string()))
+//}
+
+register_module!(mut m, {
+    m.export_function("version_string", version_string_js);
+    m.export_function("version", version_js);
+
+    Ok(())
+});

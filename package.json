@@ -5,10 +5,14 @@
   "main": "lib/index.js",
   "author": "Nikolay Kostyurin <jilizart@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "install": "neon build",
+    "test": "jest lib"
+  },
   "dependencies": {
     "neon-cli": "^0.2.0"
   },
-  "scripts": {
-    "install": "neon build"
+  "devDependencies": {
+    "jest": "^26.4.2"
   }
 }
