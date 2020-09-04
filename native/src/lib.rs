@@ -7,6 +7,8 @@ extern crate neon;
 extern crate libc;
 
 use bncs::*;
+use std::path::Path;
+use std::path::PathBuf;
 use neon::prelude::*;
 
 mod bncs;
@@ -54,13 +56,26 @@ fn version_string_js(mut cx: FunctionContext) -> JsResult<JsString> {
     Ok(cx.string(version_string()))
 }
 
-//fn get_exe_info_js(mut cx: FunctionContext) -> JsResult<JsString> {
-//    Ok(cx.string(version_string()))
-//}
+fn get_exe_info_js(mut cx: FunctionContext) -> JsResult<JsObject> {
+    let path_string = cx.argument::<JsString>(0)?.value();
+    let path = PathBuf::from(path_string);
+    let (length,
+        exe_info,
+        exe_version) = get_exe_info(&path);
+
+    let object = JsObject::new(&mut cx);
+    let js_info = cx.string(&exe_info);
+    let js_version = cx.number(exe_version as f64);
+    object.set(&mut cx, "exe_info", js_info).unwrap();
+    object.set(&mut cx, "exe_version", js_version).unwrap();
+
+    Ok(object)
+}
 
 register_module!(mut m, {
     m.export_function("version_string", version_string_js);
     m.export_function("version", version_js);
+    m.export_function("get_exe_info", get_exe_info_js);
 
     Ok(())
 });

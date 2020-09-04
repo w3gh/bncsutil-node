@@ -36,9 +36,6 @@ pub fn version_string() -> String {
         let exe_info_string = String::from_utf8(exe_info_slice.iter().map(|&c| c as u8).collect()).unwrap();
         let exe_info: String = exe_info_string.chars().take(length as usize).collect();
 
-        println!("exe_info {:?}", exe_info);
-        println!("length {:?}", length);
-
         exe_info
     }
 }
@@ -49,7 +46,6 @@ pub fn get_exe_info(path: &Path) -> (i32, String, u32) {
 
         let s = CString::new(path_str).unwrap();
         let ptr = s.as_ptr();
-        println!("Cstrinf path {:?} !", s);
         let mut exe_version: u32 = 0;
         let mut exe_info_vec : Vec<i8> = vec![0i8; 1024];
         let exe_info_slice = exe_info_vec.as_mut_slice();
@@ -57,10 +53,6 @@ pub fn get_exe_info(path: &Path) -> (i32, String, u32) {
         let length = getExeInfo(ptr, exe_info_ptr, 1024 as usize, &mut exe_version, 1 as i32);
         let exe_info_string = String::from_utf8(exe_info_slice.iter().map(|&c| c as u8).collect()).unwrap();
         let exe_info: String = exe_info_string.chars().take(length as usize).collect();
-
-        println!("exe_info {:?}", exe_info);
-        println!("exe_version {:?}", exe_version);
-        println!("length {:?}", length);
 
         (
             length,
