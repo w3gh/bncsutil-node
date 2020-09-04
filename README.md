@@ -1,3 +1,3 @@
 # bncsutil-node
 
-BNCS bindings for Node
+BNCS bindings for Node https://github.com/BNETDocs/bncsutil
