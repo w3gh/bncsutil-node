@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "install": "neon build",
-    "test": "jest lib"
+    "test": "npm run install && jest lib"
   },
   "dependencies": {
     "neon-cli": "^0.2.0"
