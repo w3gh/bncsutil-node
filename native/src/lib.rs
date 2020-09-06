@@ -71,11 +71,44 @@ fn get_exe_info_js(mut cx: FunctionContext) -> JsResult<JsObject> {
 
     Ok(object)
 }
+// value: String, files: Vec<&Path>, mpqNumber: i32
+fn check_revision_js(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    let value_string = cx.argument::<JsString>(0)?.value();
+    let files_arr_handle: Handle<JsArray> = cx.argument(1)?;
+    let files_vec: Vec<Handle<JsValue>> = files_arr_handle.to_vec(&mut cx)?;
+    let files = files_vec
+        .iter()
+        .map(|val| val.to_string(&mut cx).unwrap())
+        .map(|val| val.value())
+        .collect::<Vec<String>>();
+
+    let files_ref = files.iter().map(|val| Path::new(val.as_str())).collect();
+
+    let mpq_number = cx.argument::<JsNumber>(2)?.value();
+
+    Ok(cx.number(check_revision(value_string, files_ref, mpq_number as i32)))
+}
+
+// value: String, file1: &Path, file2: &Path, file3: &Path, mpq_number: i32
+fn check_revision_flat_js(mut cx: FunctionContext) -> JsResult<JsNumber> {
+    let value_string = cx.argument::<JsString>(0)?.value();
+    let file1= cx.argument::<JsString>(1)?.value();
+    let file2= cx.argument::<JsString>(2)?.value();
+    let file3= cx.argument::<JsString>(3)?.value();
+    let mpq_number = cx.argument::<JsNumber>(4)?.value();
+
+    let files = vec![file1, file2, file3];
+    let files_ref = files.iter().map(|val| Path::new(val.as_str())).collect();
+
+    Ok(cx.number(check_revision(value_string, files_ref, mpq_number as i32)))
+}
 
 register_module!(mut m, {
     m.export_function("version_string", version_string_js);
     m.export_function("version", version_js);
     m.export_function("get_exe_info", get_exe_info_js);
+    m.export_function("check_revision", check_revision_js);
+    m.export_function("check_revision_flat", check_revision_flat_js);
 
     Ok(())
 });
