@@ -1,4 +1,7 @@
-language: node_js
+language: rust
+
+rust:
+  - stable
 
 node_js:
   - 'lts/*'
