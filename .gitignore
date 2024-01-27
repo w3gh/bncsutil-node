@@ -7,3 +7,8 @@ native/bncsutil/build/CMakeFiles
 **/.DS_Store
 ./.idea
 .idea
+target
+*.node
+artifacts.json
+bncsutil/build/CMakeFiles
+node_modules

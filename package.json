@@ -1,18 +1,37 @@
 {
-  "name": "bncsutil",
+  "name": "bncsutil-node",
   "version": "0.1.0",
   "description": "BNCS bindings for Node",
-  "main": "lib/index.js",
+  "main": "index.js",
   "author": "Nikolay Kostyurin <jilizart@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "install": "neon build",
-    "test": "npm run install && jest lib"
+  "napi": {
+    "name": "bncsutil-node",
+    "triples": {
+      "additional": [
+        "aarch64-apple-darwin",
+        "aarch64-linux-android",
+        "aarch64-unknown-linux-gnu",
+        "x86_64-unknown-freebsd"
+      ]
+    }
   },
   "dependencies": {
-    "neon-cli": "0.10.1"
+    "@node-rs/helper": "^1.2.1"
   },
   "devDependencies": {
+    "@napi-rs/cli": "^1.2.1",
     "jest": "^26.4.2"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "version": "napi version",
+    "test": "npm run build && jest ."
   }
 }

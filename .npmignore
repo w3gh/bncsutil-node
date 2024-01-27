@@ -1,3 +1,10 @@
-native/target
-native/index.node
-native/artifacts.json
+target
+Cargo.lock
+.cargo
+.github
+npm
+.eslintrc
+.prettierignore
+rustfmt.toml
+yarn.lock
+*.node
