@@ -1,7 +1,5 @@
 const lib = require('./index');
 
-console.log(Object.keys(lib));
-
 describe('bncsutil', () => {
     test('version', () => {
         expect(lib.version()).toBe(10300)
@@ -26,7 +24,7 @@ describe('bncsutil', () => {
         expect(lib.extractMPQNumber("ver-IX86-3.mpq")).toBe(3);
     });
 
-    test('check_revision', () => {
+    test('checkRevision', () => {
         expect(lib.checkRevision(
             "B=454282227 C=2370009462 A=2264812340 4 A=A^S B=B-C C=C-A A=A+B",
             ["./mock/war3.exe"],

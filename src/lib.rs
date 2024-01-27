@@ -9,8 +9,6 @@ extern crate libc;
 use napi::*;
 use std::path::Path;
 use std::path::PathBuf;
-use std::convert::TryInto;
-use std::collections::HashMap;
 
 mod bncs;
 
@@ -67,16 +65,8 @@ pub struct ExeInfo {
 
 #[napi]
 fn get_exe_info(path_string: String) -> ExeInfo {
-    // let path_string = cx.get::<JsString>(0)?.try_into()?;
     let path = PathBuf::from(path_string);
     let (_, exe_info, exe_version) = bncs::get_exe_info(&path);
-
-    // let object = cx.env.create_object();
-    // let js_info = cx.env.create_string(&exe_info);
-    // let js_version = cx.env.create_double(exe_version as f64);
-
-    // object.set("exe_info", js_info).unwrap();
-    // object.set("exe_version", js_version).unwrap();
 
     ExeInfo {
         exe_info,
@@ -117,14 +107,3 @@ fn check_revision_flat(value: String, file1: String, file2: String, file3: Strin
 
     bncs::check_revision(value, files_ref, mpq_number as i32)
 }
-
-// #[module_exports]
-// fn init(mut m: JsObject) -> Result<()> {
-//   m.create_named_method("version_string", version_string_js);
-//   m.create_named_method("version", version_js);
-//   m.create_named_method("get_exe_info", get_exe_info_js);
-// //   m.create_named_method("check_revision", check_revision_js);
-// //   m.create_named_method("check_revision_flat", check_revision_flat_js);
-
-//   Ok(())
-// }
