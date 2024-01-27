@@ -35,6 +35,15 @@ extern {
         mpqNumber: ::std::os::raw::c_int,
         checksum: *mut ::std::os::raw::c_ulong,
     ) -> ::std::os::raw::c_int;
+    pub fn kd_quick(
+        cd_key: *const ::std::os::raw::c_char,
+        client_token: u32,
+        server_token: u32,
+        public_value: *mut u32,
+        product: *mut u32,
+        hash_buffer: *mut ::std::os::raw::c_char,
+        buffer_len: usize,
+    ) -> ::std::os::raw::c_int;
 }
 
 pub fn version() -> u64 {
@@ -127,6 +136,42 @@ pub fn check_revision_flat(value: String, file1: &Path, file2: &Path, file3: &Pa
     }
 }
 
+// { CDKey: 'FFFFFFFFFFFFFFFFFFFFFFFFFF', clientToken: 130744796, serverToken: 1655005115 } { publicValue: 10992493, product: 5650, hash: '0 0 0 0 0 0 0 0' }
+pub fn keydecode_quick(cd_key: String, client_token: u32, server_token: u32) -> (u32, u32, Vec<u8>) {
+    unsafe {
+        let cd_key_str = CString::new(cd_key).unwrap();
+        let mut public_value: u32 = 0;
+        let mut product: u32 = 0;
+        let mut hash_buffer_vec : Vec<i8> = vec![0i8; 20];
+        let hash_buffer_slice = hash_buffer_vec.as_mut_slice();
+        let hash_buffer_ptr = hash_buffer_slice.as_mut_ptr();
+
+        let status = kd_quick(
+            cd_key_str.as_ptr(),
+            client_token,
+            server_token,
+            &mut public_value,
+            &mut product,
+            hash_buffer_ptr,
+            20 as usize
+        );
+
+        if status == 0 {
+            panic!("Failed to kd_quick")
+        }
+
+       let hash_buffer_char_vec: Vec<u8> = hash_buffer_slice.iter().map(|&c| c as u8).collect();
+
+//        let hash_buffer_string = String::from_utf8(hash_buffer_char_vec).expect("Failed to convert hash to string");
+
+        (
+            public_value,
+            product,
+            hash_buffer_char_vec
+        )
+    }
+}
+
 #[cfg(test)]
 mod bncs_tests {
     use super::*;
@@ -166,5 +211,25 @@ mod bncs_tests {
         let files = vec![file1];
 
         assert_eq!(check_revision(value, files, 1), 3796461076 as u32)
+    }
+
+    // {
+    // CDKey: 'FFFFFFFFFFFFFFFFFFFFFFFFFF',
+    // clientToken: 130744796,
+    // serverToken: 2115470359 } {
+    // publicValue: 10992493,
+    // product: 5650, hash: '81 78 135 115 190 107 211 30 62 86 64 112 162 230 136 132 198 76 8 165
+    #[test]
+    fn test_keydecode_quick() {
+        let cd_key = String::from("FFFFFFFFFFFFFFFFFFFFFFFFFF");
+        let client_token: u32 = 130744796;
+        let server_token: u32 = 2115470359;
+        let result_vec: Vec<u8> = vec![81, 78, 135, 115, 190, 107, 211, 30, 62, 86, 64, 112, 162, 230, 136, 132, 198, 76, 8, 165];
+//        let result_hash = String::from("0 0 0 0 0 0 0 0");
+        let (public_value, product, hash) = keydecode_quick(cd_key, client_token, server_token);
+
+        println!("jkeycode qucik {:?} {:?} {:?}", public_value, product, hash);
+
+        assert_eq!((public_value, product, hash), (10992493 as u32, 5650 as u32, result_vec))
     }
 }

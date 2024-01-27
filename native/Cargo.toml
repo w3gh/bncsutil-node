@@ -11,10 +11,10 @@ name = "bncsutil_node"
 crate-type = ["cdylib"]
 
 [build-dependencies]
-neon-build = "0.4.0"
+neon-build = "0.10.1"
 cmake = "0.1"
 
 [dependencies]
-neon = "0.4.0"
+neon = "0.10.1"
 libc = "0.2"
-gmp = "0.3.1"
+# gmp-mpfr-sys = "1.6.2"

@@ -10,7 +10,7 @@
     "test": "npm run install && jest lib"
   },
   "dependencies": {
-    "neon-cli": "^0.2.0"
+    "neon-cli": "0.10.1"
   },
   "devDependencies": {
     "jest": "^26.4.2"
